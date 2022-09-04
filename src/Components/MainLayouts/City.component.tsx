@@ -1,8 +1,8 @@
 import React from "react";
+import { useParams } from "react-router-dom";
 
-type CityProps = {
-  name: string;
-};
+type CityProps = {};
 export const City = (props: CityProps): React.ReactElement => {
-  return <div>{props.name} city</div>;
+  let { city } = useParams();
+  return <div>{city} city</div>;
 };

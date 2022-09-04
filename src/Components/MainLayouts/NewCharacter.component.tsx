@@ -4,6 +4,7 @@ import { ButtonPrimary, NumberBox, TextBox } from "../InteractiveComponents";
 import { TextTitle } from "../TextComponents";
 import { LabelLeft } from "../TextComponents/LabelLeft.component";
 import { useNavigate } from "react-router-dom";
+import { Container } from "react-bootstrap";
 
 export const NewCharacter = (): React.ReactElement => {
   const onNameChange = (name: string) => {
@@ -65,7 +66,7 @@ export const NewCharacter = (): React.ReactElement => {
   };
 
   return (
-    <>
+    <Container>
       <TextTitle>New character</TextTitle>
       <LabelLeftGroup>
         <LabelLeft text="Name">
@@ -86,6 +87,6 @@ export const NewCharacter = (): React.ReactElement => {
       </LabelLeftGroup>
 
       <ButtonPrimary onClick={start}>Start</ButtonPrimary>
-    </>
+    </Container>
   );
 };
