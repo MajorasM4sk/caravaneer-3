@@ -19,7 +19,7 @@ function App(): React.ReactElement {
           <Route path="/" element={<Title />} />
           <Route path="/new-character" element={<NewCharacter />} />
           <Route path="/map" element={<Map />} />
-          <Route path="/city/:city" element={<City />} />
+          <Route path="/cities/:city" element={<City />} />
         </Routes>
       </BrowserRouter>
     </>

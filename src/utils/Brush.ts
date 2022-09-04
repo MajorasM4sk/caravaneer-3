@@ -1,4 +1,3 @@
-import { Point } from "../Classes/Point";
 import { Maths } from "./Maths";
 
 export class Brush {
@@ -9,8 +8,6 @@ export class Brush {
   private static COMPASS_3 = 1.18;
 
   public static refreshCanvas = (ctx: CanvasRenderingContext2D) => {
-    ctx.canvas.width = 1150;
-    ctx.canvas.height = 769;
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     ctx.fillStyle = "rgb(209, 204, 182)";
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -26,7 +23,10 @@ export class Brush {
     ctx.fill();
     ctx.stroke();
     ctx.beginPath();
-    ctx.fillStyle = "#888";
+    let grd2 = ctx.createRadialGradient(x, y, Brush.STUFF_SIZE / 4, x, y, Brush.STUFF_SIZE / 2);
+    grd2.addColorStop(0, "rgba(136, 136, 136, 0.4)");
+    grd2.addColorStop(1, "#888");
+    ctx.fillStyle = grd2;
     ctx.arc(x, y, Brush.STUFF_SIZE / 2, 0, 2 * Math.PI);
     ctx.fill();
     ctx.stroke();
@@ -43,8 +43,8 @@ export class Brush {
     //circle
     ctx.beginPath();
     ctx.strokeStyle = "#333";
-    let grd = ctx.createRadialGradient(x, y, 15, x, y, Brush.PLAYER_SIZE);
-    grd.addColorStop(0, "rgba(153, 153, 119, 0.95)");
+    let grd = ctx.createRadialGradient(x, y, 5, x, y, Brush.PLAYER_SIZE);
+    grd.addColorStop(0, "rgba(153, 153, 119, 0.9)");
     grd.addColorStop(1, "rgba(0,0,0,0)");
     ctx.fillStyle = grd;
     ctx.arc(x, y, Brush.PLAYER_SIZE, 0, 2 * Math.PI);

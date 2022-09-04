@@ -1,67 +1,71 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { Button, Col, Row, Container } from "react-bootstrap";
 import { Brush } from "../../utils/Brush";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { MapData } from "../../Classes/MapData";
 import { Point } from "../../Classes/Point";
+import { Maths } from "../../utils/Maths";
 
 const getCursorPosition = (canvas: HTMLCanvasElement, event: React.MouseEvent<HTMLCanvasElement>): Point => {
   const rect = canvas.getBoundingClientRect();
-  const x = event.clientX - rect.left;
-  const y = event.clientY - rect.top;
-  return { x: x, y: y };
+  return { x: event.clientX - rect.left - canvas.width / 2, y: event.clientY - rect.top - canvas.height / 2 };
 };
 
 const Map = (): React.ReactElement => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  const openCity = (city: string) => {};
+  useEffect(() => {
+    canvasRef.current.width = 1150;
+    canvasRef.current.height = 769;
+  }, []);
+
+  const navigate = useNavigate();
+  const enterCity = (city: string) => {
+    navigate("/cities/" + city);
+  };
 
   let map: MapData = {
+    paused: false,
     theta: Math.PI / 2,
     lastFrame: null,
     gameSpeed: 1,
     fps: 30,
-    location: { x: 0, y: 0 },
-    objects: [
-      { type: "town", text: "Junkyard", location: { x: 0, y: -100 }, onCollideCallback: openCity },
-      {
-        type: "player",
-        text: "",
-        location: { x: 0, y: 0 },
-        onCollideCallback: undefined,
-      },
-    ],
+    playerLocation: { x: 0, y: 0 },
+    cities: [{ text: "Junkyard", location: { x: 0, y: -100 }, isCapital: false }],
   };
 
   const canvasClickHandler = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    let p = getCursorPosition(canvasRef.current, e);
-    p.x -= canvasRef.current.width / 2;
-    p.y -= canvasRef.current.height / 2;
-    MapData.setDirection(map, p);
+    MapData.setDirection(map, getCursorPosition(canvasRef.current, e));
+  };
+
+  const canvasMouseMoveHandler = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    MapData.updateCursor(map, canvasRef.current, getCursorPosition(canvasRef.current, e));
+  };
+
+  const detectPlayerCollisions = (p: Point, radius: number, callback: () => void) => {
+    if (Maths.distance(p, { x: p.x - map.playerLocation.x, y: map.playerLocation.y }) < radius) {
+      callback();
+    }
   };
 
   const refresh = (t: number) => {
     MapData.updateMapLocation(map, t);
     const ctx = canvasRef.current.getContext("2d");
     Brush.refreshCanvas(ctx);
-    map.objects.forEach((obj) => {
-      switch (obj.type) {
-        case "city":
-          Brush.drawTown(ctx, obj.location.x - map.location.x, obj.location.y - map.location.y, obj.text);
-          break;
-        case "player":
-          Brush.drawPlayer(ctx, map.theta - Math.PI / 2);
-          break;
-        case "ennemy":
-          Brush.drawTown(ctx, ctx.canvas.width / 2, 0, obj.text);
-          break;
-        case "town":
-          Brush.drawTown(ctx, obj.location.x - map.location.x + ctx.canvas.width / 2, obj.location.y - map.location.y + ctx.canvas.height / 2, obj.text);
-          break;
+    map.cities.forEach((obj) => {
+      if (obj.isCapital) {
+        Brush.drawTown(ctx, obj.location.x - map.playerLocation.x, obj.location.y - map.playerLocation.y, obj.text);
+      } else {
+        Brush.drawTown(ctx, obj.location.x - map.playerLocation.x + ctx.canvas.width / 2, obj.location.y - map.playerLocation.y + ctx.canvas.height / 2, obj.text);
       }
+      //detect collisions
+      detectPlayerCollisions(obj.location, Brush.STUFF_SIZE, () => {
+        enterCity(obj.text);
+      });
     });
+    Brush.drawPlayer(ctx, map.theta - Math.PI / 2);
     Brush.drawDirtyScreen(ctx);
+
     requestAnimationFrame(refresh);
   };
 
@@ -70,7 +74,7 @@ const Map = (): React.ReactElement => {
   return (
     <Row>
       <Col>
-        <canvas onMouseDown={canvasClickHandler} ref={canvasRef} />
+        <canvas onMouseDown={canvasClickHandler} onMouseMove={canvasMouseMoveHandler} ref={canvasRef} />
       </Col>
       <Col>
         <Container>
