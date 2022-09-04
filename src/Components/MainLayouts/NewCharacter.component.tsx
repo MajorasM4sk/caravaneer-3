@@ -1,12 +1,19 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { LabelLeftGroup } from "../ComponentLayouts/LabelLeftGroup.component";
 import { ButtonPrimary, NumberBox, TextBox } from "../InteractiveComponents";
 import { TextTitle } from "../TextComponents";
 import { LabelLeft } from "../TextComponents/LabelLeft.component";
 import { useNavigate } from "react-router-dom";
-import { Container } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 
 export const NewCharacter = (): React.ReactElement => {
+  let body = useRef<HTMLBodyElement>(document.querySelector("body"));
+  body.current.style.backgroundImage = "url(/background.jpg)";
+  body.current.style.backgroundSize = "cover";
+  body.current.style.backgroundRepeat = "no-repeat";
+  body.current.style.backgroundPosition = "center";
+  body.current.style.backgroundAttachment = "fixed";
+
   const onNameChange = (name: string) => {
     setName(name);
   };
@@ -67,26 +74,33 @@ export const NewCharacter = (): React.ReactElement => {
 
   return (
     <Container>
-      <TextTitle>New character</TextTitle>
-      <LabelLeftGroup>
-        <LabelLeft text="Name">
-          <TextBox value={name} onChange={setName} />
-        </LabelLeft>
-        <LabelLeft text="Physical">
-          <NumberBox value={physical} increment={incrementPhysical} decrement={decrementPhysical} />
-        </LabelLeft>
-        <LabelLeft text="Agility">
-          <NumberBox value={agility} increment={incrementAgility} decrement={decrementAgility} />
-        </LabelLeft>
-        <LabelLeft text="Accuracy">
-          <NumberBox value={accuracy} increment={incrementAccuracy} decrement={decrementAccuracy} />
-        </LabelLeft>
-        <LabelLeft text="Intelligence">
-          <NumberBox value={intelligence} increment={incrementIntelligence} decrement={decrementIntelligence} />
-        </LabelLeft>
-      </LabelLeftGroup>
+      <Row className="form">
+        <Col md="7">
+          <Container className="light">
+            <TextTitle>New character</TextTitle>
+            <LabelLeftGroup>
+              <LabelLeft text="Name" colmd1={3} colmd2={6} hr={true}>
+                <TextBox value={name} onChange={setName} />
+              </LabelLeft>
+              <LabelLeft text={"Remaining points : " + (20 - physical - agility - accuracy - intelligence)} colmd1={12} colmd2={0} hr={true}></LabelLeft>
+              <LabelLeft text="Physical" colmd1={3} colmd2={6} hr={true}>
+                <NumberBox value={physical} increment={incrementPhysical} decrement={decrementPhysical} />
+              </LabelLeft>
+              <LabelLeft text="Agility" colmd1={3} colmd2={6} hr={true}>
+                <NumberBox value={agility} increment={incrementAgility} decrement={decrementAgility} />
+              </LabelLeft>
+              <LabelLeft text="Accuracy" colmd1={3} colmd2={6} hr={true}>
+                <NumberBox value={accuracy} increment={incrementAccuracy} decrement={decrementAccuracy} />
+              </LabelLeft>
+              <LabelLeft text="Intelligence" colmd1={3} colmd2={6} hr={false}>
+                <NumberBox value={intelligence} increment={incrementIntelligence} decrement={decrementIntelligence} />
+              </LabelLeft>
+            </LabelLeftGroup>
 
-      <ButtonPrimary onClick={start}>Start</ButtonPrimary>
+            <ButtonPrimary onClick={start}>Start</ButtonPrimary>
+          </Container>
+        </Col>
+      </Row>
     </Container>
   );
 };

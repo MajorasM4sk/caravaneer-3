@@ -1,4 +1,5 @@
 import React from "react";
+import { Button, Col, Row } from "react-bootstrap";
 
 type ButtonPrimaryProps = {
   children: React.ReactNode;
@@ -6,8 +7,14 @@ type ButtonPrimaryProps = {
 };
 export const ButtonPrimary = (props: ButtonPrimaryProps): React.ReactElement => {
   return (
-    <button onClick={props.onClick} style={{ display: "block", marginBottom: "10px" }}>
-      {props.children}
-    </button>
+    <Row>
+      <Col md="4">
+        <div className="d-grid gap-2">
+          <Button size="lg" variant="rusty" onClick={props.onClick}>
+            {props.children}
+          </Button>
+        </div>
+      </Col>
+    </Row>
   );
 };

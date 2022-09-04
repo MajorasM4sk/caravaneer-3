@@ -5,8 +5,8 @@ type LabelLeftGroupProps = {
 };
 export const LabelLeftGroup = (props: LabelLeftGroupProps): React.ReactElement => {
   return (
-    <table style={{ marginBottom: "10px" }}>
-      <tbody>{props.children}</tbody>
-    </table>
+    <div style={{ marginBottom: "10px" }}>
+      <div>{props.children}</div>
+    </div>
   );
 };

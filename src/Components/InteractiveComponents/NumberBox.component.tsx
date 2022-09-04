@@ -1,4 +1,5 @@
 import React from "react";
+import { Button, Col, Container, Form, Row } from "react-bootstrap";
 
 type NumberBoxProps = {
   value: number;
@@ -7,12 +8,20 @@ type NumberBoxProps = {
 };
 export const NumberBox = (props: NumberBoxProps): React.ReactElement => {
   return (
-    <>
-      <button onClick={props.decrement}>-</button>
-      <input type={"number"} readOnly={true} value={props.value} />
-      <button onClick={props.increment} style={{ marginTop: "5px" }}>
-        +
-      </button>
-    </>
+    <Row>
+      <Col md="auto">
+        <Button variant="rusty" onClick={props.decrement}>
+          -
+        </Button>
+      </Col>
+      <Col md="auto">
+        <Form.Control type={"number"} readOnly={true} value={props.value} />
+      </Col>
+      <Col md="auto">
+        <Button variant="rusty" onClick={props.increment}>
+          +
+        </Button>
+      </Col>
+    </Row>
   );
 };

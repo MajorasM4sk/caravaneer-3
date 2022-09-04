@@ -1,6 +1,9 @@
+import { Point } from "../Classes/Point";
+import { Maths } from "./Maths";
+
 export class Brush {
-  private static STUFF_SIZE = 30;
-  private static PLAYER_SIZE = 26;
+  public static STUFF_SIZE = 34;
+  public static PLAYER_SIZE = 24;
   private static COMPASS_1 = 3;
   private static COMPASS_2 = 1.3;
   private static COMPASS_3 = 1.18;
@@ -13,7 +16,7 @@ export class Brush {
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
   };
 
-  public static drawTown = (ctx: CanvasRenderingContext2D, x: number, y: number) => {
+  public static drawTown = (ctx: CanvasRenderingContext2D, x: number, y: number, name: string) => {
     ctx.beginPath();
     let grd = ctx.createRadialGradient(x, y, Brush.STUFF_SIZE / 1.5, x, y, Brush.STUFF_SIZE);
     grd.addColorStop(0, "#cca");
@@ -23,13 +26,17 @@ export class Brush {
     ctx.fill();
     ctx.stroke();
     ctx.beginPath();
-    ctx.fillStyle = "#999";
+    ctx.fillStyle = "#888";
     ctx.arc(x, y, Brush.STUFF_SIZE / 2, 0, 2 * Math.PI);
     ctx.fill();
     ctx.stroke();
+    ctx.textAlign = "center";
+    ctx.fillStyle = "rgb(38,38,38)";
+    ctx.font = "20px Arial, Helvetica, sans-serif";
+    ctx.fillText(name, x, y + Brush.STUFF_SIZE + 20, 400);
   };
 
-  public static drawPlayer = (ctx: CanvasRenderingContext2D) => {
+  public static drawPlayer = (ctx: CanvasRenderingContext2D, radians: number) => {
     let x = ctx.canvas.width / 2;
     let y = ctx.canvas.height / 2;
 
@@ -37,7 +44,7 @@ export class Brush {
     ctx.beginPath();
     ctx.strokeStyle = "#333";
     let grd = ctx.createRadialGradient(x, y, 15, x, y, Brush.PLAYER_SIZE);
-    grd.addColorStop(0, "#997");
+    grd.addColorStop(0, "rgba(153, 153, 119, 0.95)");
     grd.addColorStop(1, "rgba(0,0,0,0)");
     ctx.fillStyle = grd;
     ctx.arc(x, y, Brush.PLAYER_SIZE, 0, 2 * Math.PI);
@@ -133,10 +140,14 @@ export class Brush {
     //cursor
     ctx.fillStyle = "rgba(60, 50, 50, 0.7)";
     ctx.beginPath();
-    ctx.moveTo(x, y - Brush.PLAYER_SIZE / 1.1);
-    ctx.lineTo(x - Brush.PLAYER_SIZE / 2, y + Brush.PLAYER_SIZE / 1.4);
-    ctx.lineTo(x, y + Brush.PLAYER_SIZE / 4);
-    ctx.lineTo(x + Brush.PLAYER_SIZE / 2, y + Brush.PLAYER_SIZE / 1.4);
+    let p1 = Maths.rotate({ x: x, y: y - Brush.PLAYER_SIZE / 1.1 }, { x: x, y: y }, radians);
+    let p2 = Maths.rotate({ x: x - Brush.PLAYER_SIZE / 2, y: y + Brush.PLAYER_SIZE / 1.4 }, { x: x, y: y }, radians);
+    let p3 = Maths.rotate({ x: x, y: y + Brush.PLAYER_SIZE / 4 }, { x: x, y: y }, radians);
+    let p4 = Maths.rotate({ x: x + Brush.PLAYER_SIZE / 2, y: y + Brush.PLAYER_SIZE / 1.4 }, { x: x, y: y }, radians);
+    ctx.moveTo(p1.x, p1.y);
+    ctx.lineTo(p2.x, p2.y);
+    ctx.lineTo(p3.x, p3.y);
+    ctx.lineTo(p4.x, p4.y);
     ctx.closePath();
     ctx.fill();
   };
