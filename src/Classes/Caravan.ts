@@ -1,16 +1,17 @@
-import { Animal } from "./Animal";
-import { Item } from "./Item";
-import { Person } from "./Person";
-import { Vehicule } from "./Vehicule";
+import { Animal, AnimalData } from "./Animal";
+import { ItemData } from "./Item";
+import { PersonData } from "./Person";
+import { VehiculeData } from "./Vehicule";
 
-export class Caravan {
-  id: number;
-  people: Person[] | number[]; //id et DAO? Central?
-  animals: Animal[] | number[];
-  cargo: Item[];
-  name: string;
+export class CaravanData {
+  id: string;
+  people: PersonData[];
+  animals?: Animal[];
+  vehicules: VehiculeData[];
+  cargo?: ItemData[];
+  name?: string;
   money: number;
-  reputation: {
+  reputation?: {
     friendly: number;
     thrustworthy: number;
     rational: number;
@@ -20,9 +21,11 @@ export class Caravan {
     slaver: number;
     lawbreaker: number;
   };
-  faction: string; //à raffiner
+  faction: string;
+}
 
-  public isProtagonist = () => this.id === 0;
+export class Caravan extends CaravanData {
+  public isProtagonist = () => this.id === "0";
   public getMaxLoad = () => {};
   public getCurrentLoad = () => {};
   public getMaxLiquid = () => {};
@@ -35,11 +38,11 @@ export class Caravan {
   public hasOtherProblem = () => {};
   public electricityProduction = () => {};
   public electricityConsommation = () => {};
-  public slaughterAnimal = (animal: Animal) => {};
-  public renameAnimal = (animal: Animal) => {};
-  public abandonAnimal = (animal: Animal) => {};
-  public lubricateVehicule = (vehicule: Vehicule) => {};
-  public abandonVehicule = (vehicule: Vehicule) => {};
+  public slaughterAnimal = (animal: AnimalData) => {};
+  public renameAnimal = (animal: AnimalData) => {};
+  public abandonAnimal = (animal: AnimalData) => {};
+  public lubricateVehicule = (vehicule: VehiculeData) => {};
+  public abandonVehicule = (vehicule: VehiculeData) => {};
   public getAverageMorale = () => {};
   public getFoodConsumption = () => {};
   public getWaterConsumption = () => {};

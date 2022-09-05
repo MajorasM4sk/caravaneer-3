@@ -1,6 +1,7 @@
-import { Item } from "./Item";
+import { ItemData } from "./Item";
 
-export class Animal {
+export class AnimalData {
+  public id: string;
   public type: number;
   public name: number;
   public gender: number;
@@ -17,9 +18,11 @@ export class Animal {
   public maxNbAttachedCart: number;
   public weight: number;
   public idealWeight: number;
-  public produces: Item[];
+  public produces: ItemData[];
   public baseSpeed: number;
+}
 
+export class Animal extends AnimalData {
   public getMaxLoad = () => {};
   public getAge = () => {};
   public getMeat = () => {};

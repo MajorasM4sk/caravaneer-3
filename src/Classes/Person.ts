@@ -1,7 +1,7 @@
-import { Item } from "./Item";
+import { ItemData } from "./Item";
 
-export class Person {
-  public isProtagonist: boolean;
+export class PersonData {
+  public id: string;
   public group: string;
   public name: string;
   public physical: number;
@@ -45,17 +45,17 @@ export class Person {
   public waterConsumption: number;
   public faction: string;
   public equipment: {
-    weapon: Item;
-    attachment1: Item;
-    attachment2: Item;
-    defaultAmmo: Item;
-    secondaryWeapon: Item;
-    secondaryAttachment1: Item;
-    secondaryAttachment2: Item;
-    secondaryDefaultAmmo: Item;
-    inventory: Item[];
-    helmet: Item;
-    chestProtection: Item;
+    weapon?: ItemData;
+    attachment1?: ItemData;
+    attachment2?: ItemData;
+    defaultAmmo?: ItemData;
+    secondaryWeapon?: ItemData;
+    secondaryAttachment1?: ItemData;
+    secondaryAttachment2?: ItemData;
+    secondaryDefaultAmmo?: ItemData;
+    inventory?: ItemData[];
+    helmet?: ItemData;
+    chestProtection?: ItemData;
   };
   public distanceTravelled: number;
   public damageTaken: number;
@@ -66,26 +66,29 @@ export class Person {
   public sight: number;
   public weight: number;
   public idealWeight: number;
+}
 
-  public getMaxLoad = () => {};
-  public getSight = () => {};
-  public getTotalExperience = () => {};
-  public getLearningCapacity = () => {};
-  public getPainThreshold = () => {};
-  public reload = () => {};
-  public getDodgeChance = () => {};
-  public getHitChance = () => {};
-  public attack = () => {};
-  public move = () => {};
-  public switchWeapons = () => {};
-  public maxLoad = () => {};
-  public getSightDistance = () => {};
-  public getAP = () => {};
-  public getMorale = () => {};
-  public getHealthState = () => {};
-  public getSpeed = () => {};
-  public getPercentIdealWeight = () => {};
-  public getDamageResistance = () => {};
-  public getFireResistance = () => {};
-  public getExplosionResistance = () => {};
+export class SPerson {
+  public static isProtagonist = (p: PersonData): boolean => p.id === "0";
+  public static getMaxLoad = (p: PersonData) => {};
+  public static getSight = (p: PersonData) => {};
+  public static getTotalExperience = (p: PersonData) => {};
+  public static getLearningCapacity = (p: PersonData) => {};
+  public static getPainThreshold = (p: PersonData) => {};
+  public static reload = (p: PersonData) => {};
+  public static getDodgeChance = (p: PersonData) => {};
+  public static getHitChance = (p: PersonData) => {};
+  public static attack = (p: PersonData) => {};
+  public static move = (p: PersonData) => {};
+  public static switchWeapons = (p: PersonData) => {};
+  public static maxLoad = (p: PersonData) => {};
+  public static getSightDistance = (p: PersonData) => {};
+  public static getAP = (p: PersonData) => {};
+  public static getMorale = (p: PersonData) => {};
+  public static getHealthState = (p: PersonData) => {};
+  public static getSpeed = (p: PersonData) => {};
+  public static getPercentIdealWeight = (p: PersonData) => {};
+  public static getDamageResistance = (p: PersonData) => {};
+  public static getFireResistance = (p: PersonData) => {};
+  public static getExplosionResistance = (p: PersonData) => {};
 }

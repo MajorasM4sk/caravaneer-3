@@ -1,23 +1,14 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { LabelLeftGroup } from "../ComponentLayouts/LabelLeftGroup.component";
 import { ButtonPrimary, NumberBox, TextBox } from "../InteractiveComponents";
 import { TextTitle } from "../TextComponents";
 import { LabelLeft } from "../TextComponents/LabelLeft.component";
 import { useNavigate } from "react-router-dom";
 import { Col, Container, Row } from "react-bootstrap";
+import { Initializer } from "../../Initialize/Initializer";
 
 export const NewCharacter = (): React.ReactElement => {
-  let body = useRef<HTMLBodyElement>(document.querySelector("body"));
-  body.current.style.backgroundImage = "url(/background.jpg)";
-  body.current.style.backgroundSize = "cover";
-  body.current.style.backgroundRepeat = "no-repeat";
-  body.current.style.backgroundPosition = "center";
-  body.current.style.backgroundAttachment = "fixed";
-
-  const onNameChange = (name: string) => {
-    setName(name);
-  };
-
+  localStorage.clear();
   const min = 1;
   const max = 10;
   const maxSum = 20;
@@ -60,15 +51,7 @@ export const NewCharacter = (): React.ReactElement => {
 
   const navigate = useNavigate();
   const start = () => {
-    sessionStorage.setItem(
-      "protagonist",
-      JSON.stringify({
-        physical: physical,
-        agility: agility,
-        accuracy: accuracy,
-        intelligence: intelligence,
-      })
-    );
+    Initializer.initGame(name, physical, agility, accuracy, intelligence);
     navigate("/map");
   };
 
