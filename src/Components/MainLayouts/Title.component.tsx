@@ -8,11 +8,11 @@ export const Title = (): React.ReactElement => {
   localStorage.clear();
   return (
     <Container>
-      <TextTitle>Caravaneer 3</TextTitle>
+      <TextTitle>CARAVANEER 3</TextTitle>
       <Link to="/new-character">
-        <ButtonPrimary>New game</ButtonPrimary>
+        <ButtonPrimary>NEW GAME</ButtonPrimary>
       </Link>
-      <ButtonPrimary>Load game</ButtonPrimary>
+      <ButtonPrimary>LOAD GAME</ButtonPrimary>
     </Container>
   );
 };

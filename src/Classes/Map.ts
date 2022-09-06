@@ -14,11 +14,11 @@ export class MapData {
 }
 
 export class SMap {
-  public static updateMapLocation = (map: MapData, t: number) => {
+  public static updateMapLocation = (map: MapData, t: number, caravanSpeedKmph: number) => {
     if (map.lastFrame !== null && !map.paused) {
       let norm = ((t - map.lastFrame) * map.gameSpeed) / 15;
-      map.playerLocation.x += Math.cos(map.theta) * norm;
-      map.playerLocation.y -= Math.sin(map.theta) * norm;
+      map.playerLocation.x += Math.cos(map.theta) * norm * Ratio.getSpeedRatioFor(caravanSpeedKmph);
+      map.playerLocation.y -= Math.sin(map.theta) * norm * Ratio.getSpeedRatioFor(caravanSpeedKmph);
     }
     map.lastFrame = t;
   };
@@ -32,6 +32,7 @@ export class SMap {
         return true;
       } else {
         map.paused = !map.paused;
+        console.log(new Date().getTime());
       }
     } else {
       map.paused = false;

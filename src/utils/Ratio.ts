@@ -2,19 +2,36 @@ import { Point } from "../Classes/Point";
 import { Maths } from "./Maths";
 
 export class Ratio {
+  //1km = 6.0348px
+  public static kmToPx = 6.0516;
+  public static getSpeedRatioFor(kmph: number) {
+    return kmph / 5.5;
+  }
+  public static getKmFromPx(px: number) {
+    return px / 6.0516;
+  }
+
   private static BASE_TOWN_SIZE = 34;
-  private static TOWN_SIZE = 34;
+  private static TOWN_SIZE = Ratio.BASE_TOWN_SIZE;
 
-  private static PLAYER_SIZE = 24;
   private static BASE_PLAYER_SIZE = 24;
+  private static PLAYER_SIZE = Ratio.BASE_PLAYER_SIZE;
 
-  private static FONT_SIZE = 20;
   private static BASE_FONT_SIZE = 20;
+  private static FONT_SIZE = Ratio.BASE_FONT_SIZE;
 
   private static windowRatio = 1;
 
-  private static BORDER_SIZE = 60;
   private static BASE_BORDER_SIZE = 60;
+  private static BORDER_SIZE = Ratio.BASE_BORDER_SIZE;
+
+  public static updateRatio = (canvas: HTMLCanvasElement) => {
+    canvas.width = window.innerWidth * 0.75;
+    canvas.height = window.innerHeight;
+    let ratio = window.innerHeight / 769;
+    Ratio.setWindowRatio(ratio);
+    canvas.getContext("2d").lineWidth = ratio;
+  };
 
   public static setWindowRatio = (ratio: number) => {
     Ratio.TOWN_SIZE = Ratio.BASE_TOWN_SIZE * ratio;

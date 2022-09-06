@@ -85,9 +85,24 @@ export class SPerson {
   public static getSightDistance = (p: PersonData) => {};
   public static getAP = (p: PersonData) => {};
   public static getMorale = (p: PersonData) => {};
-  public static getHealthState = (p: PersonData) => {};
-  public static getSpeed = (p: PersonData) => {};
-  public static getPercentIdealWeight = (p: PersonData) => {};
+  public static getHealthState = (p: PersonData): "Healthy" | "Lightly wounded" | "Moderately wounded" | "Severely wounded" | "Critically wounded" => {
+    let ratio = p.hp / p.hpMax + 0.00001;
+    if (ratio < 0.1) return "Severely wounded";
+    if (ratio < 0.4) return "Severely wounded";
+    if (ratio < 0.8) return "Moderately wounded";
+    if (ratio < 1) return "Lightly wounded";
+    return "Healthy";
+  };
+  public static getSpeedKmph = (p: PersonData) => {
+    return (
+      3 +
+      0.5 *
+        p.agility *
+        (p.hasDamagedLeg ? 0.5 : 1) *
+        (this.getHealthState(p) === "Moderately wounded" ? 0.9 : this.getHealthState(p) === "Severely wounded" ? 0.8 : this.getHealthState(p) === "Critically wounded" ? 0.2 : 1)
+    );
+  };
+  public static getPercentIdealWeight = (p: PersonData) => {}; //< 90% is almost instant death. < 95% is pretty dangerous too
   public static getDamageResistance = (p: PersonData) => {};
   public static getFireResistance = (p: PersonData) => {};
   public static getExplosionResistance = (p: PersonData) => {};

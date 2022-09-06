@@ -80,7 +80,7 @@ export const NewCharacter = (): React.ReactElement => {
               </LabelLeft>
             </LabelLeftGroup>
 
-            <ButtonPrimary onClick={start}>Start</ButtonPrimary>
+            <ButtonPrimary onClick={start}>START</ButtonPrimary>
           </Container>
         </Col>
       </Row>

@@ -1,5 +1,5 @@
 * {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: "monospace"
 }
 body {
     overflow: hidden;
@@ -8,15 +8,18 @@ body {
     width:auto;
     border-radius: 0px;
     color: rgb(38,38,38);
+    transition: none;
 }
 .btn.btn-dusty {
     background-color: rgb(150,150,130);
     margin-bottom: 20px;
+    margin-bottom: 0;
+    width:100%;
 }
 .btn.btn-dusty:hover {
     background-color: rgb(170,170,150);
 }
-.btn.btn-dusty.active {
+.btn.btn-dusty:active {
     background-color: rgb(252,252,233);
 }
 .btn.btn-rusty {

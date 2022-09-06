@@ -1,11 +1,15 @@
 import React, { useEffect, useRef } from "react";
-import { Button, Col, Row, Container } from "react-bootstrap";
+import { Button, Col, Row } from "react-bootstrap";
 import { Brush } from "../../utils/Brush";
 import { useNavigate } from "react-router-dom";
 import { SMap, MapData } from "../../Classes/Map";
 import { Point } from "../../Classes/Point";
 import { Ratio } from "../../utils/Ratio";
 import { CityData } from "../../Classes/City";
+import { Saver } from "../../utils/Saver";
+import { CaravanData, SCaravan } from "../../Classes/Caravan";
+import { DB } from "../../utils/DB";
+import { CenteredLabelAndValue } from "../TextComponents";
 
 const getCursorPosition = (canvas: HTMLCanvasElement, event: React.MouseEvent<HTMLCanvasElement>): Point => {
   const rect = canvas.getBoundingClientRect();
@@ -16,20 +20,23 @@ const Map = (): React.ReactElement => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const cv = (): HTMLCanvasElement => canvasRef.current;
 
+  let map: MapData = DB.get("map");
+  let cities: CityData[] = DB.get("cities");
+  let caravan: CaravanData = DB.get("caravan");
+
+  const navigate = useNavigate();
+
   useEffect(() => {
-    cv().width = window.innerWidth * 0.75;
-    cv().height = window.innerHeight;
-    let ratio = window.innerHeight / 769;
-    Ratio.setWindowRatio(ratio);
-    cv().getContext("2d").lineWidth = ratio;
+    Ratio.updateRatio(cv());
     requestAnimationFrame(refresh);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  let map: MapData = JSON.parse(localStorage.getItem("map"));
-  let cities: CityData[] = JSON.parse(localStorage.getItem("cities"));
+  window.onresize = () => {
+    if (cv()) Ratio.updateRatio(cv());
+  };
 
-  const canvasClickHandler = (e: React.MouseEvent<HTMLCanvasElement>) => {
+  const canvasMouseDownHandler = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (SMap.setDirection(map, getCursorPosition(cv(), e), map.onCity)) {
       enterCity(cities.find((c) => c.text === map.onCity));
     }
@@ -44,31 +51,19 @@ const Map = (): React.ReactElement => {
     map.playerLocation.y = 0;
   };
 
-  const navigate = useNavigate();
-
-  const enterCity = (city: CityData) => {
-    save({ city: city });
-    navigate("/cities/" + city.text);
-  };
-
   const btnCaravanHandler = () => {
-    save();
+    Saver.saveMap(map);
     navigate("/caravan");
   };
 
-  const save = (options?: { city?: CityData }) => {
-    if (options?.city) {
-      map.playerLocation.x = options.city.location.x;
-      map.playerLocation.y = options.city.location.y;
-      map.onCity = options.city.text;
-    }
-    map.lastFrame = null;
-    map.paused = true;
-    localStorage.setItem("map", JSON.stringify(map));
+  const enterCity = (city: CityData) => {
+    console.log(new Date().getTime());
+    Saver.saveMap(map, { city: city });
+    navigate("/cities/" + city.text);
   };
 
   const refresh = (t: number) => {
-    SMap.updateMapLocation(map, t);
+    SMap.updateMapLocation(map, t, SCaravan.getSpeedKmph(caravan));
     if (cv()) {
       const ctx = cv().getContext("2d");
       Brush.refreshCanvas(ctx);
@@ -80,7 +75,7 @@ const Map = (): React.ReactElement => {
           Brush.drawTown(ctx, p, obj.text);
         }
         //detect collisions
-        if (Ratio.playerTownCollision(cv(), obj.location, map.playerLocation)) {
+        if (Ratio.playerTownCollision(cv(), map.playerLocation, obj.location)) {
           if (map.onCity === "") {
             enterCity(obj);
           }
@@ -96,22 +91,40 @@ const Map = (): React.ReactElement => {
 
   return (
     <Row>
-      <Col>
-        <canvas onMouseDown={canvasClickHandler} onMouseMove={canvasMouseMoveHandler} ref={canvasRef} />
+      <Col style={{ paddingRight: 0 }}>
+        <canvas onMouseDown={canvasMouseDownHandler} onMouseMove={canvasMouseMoveHandler} ref={canvasRef} />
       </Col>
-      <Col>
-        <Container>
-          <Row>
-            <div className="d-grid gap-2">
-              <Button onClick={btnCaravanHandler} size="lg" variant="dusty">
-                CARAVAN MENU
-              </Button>
-              <Button onClick={btnTeleportHandler} size="lg" variant="dusty">
-                teleport to (0, 0)
-              </Button>
-            </div>
-          </Row>
-        </Container>
+      <Col style={{ paddingLeft: 0, backgroundColor: "rgb(74, 67, 52)" }}>
+        <Button onClick={btnCaravanHandler} size="lg" variant="dusty">
+          CARAVAN MENU
+        </Button>
+        <Button onClick={btnTeleportHandler} size="lg" variant="dusty">
+          MAP
+        </Button>
+        <Button onClick={btnTeleportHandler} size="lg" variant="dusty">
+          SETTINGS
+        </Button>
+        <hr />
+        <CenteredLabelAndValue text="water" value="12345" unit="L" />
+        <CenteredLabelAndValue text="food" value="123 123 154 321" unit="kcal" />
+        <CenteredLabelAndValue text="medicine" value="123" unit="g" />
+        <CenteredLabelAndValue text="forage" value="123" unit="kg" />
+        <CenteredLabelAndValue text="fuel" value="123" unit="L" />
+        <CenteredLabelAndValue text="electricity" value="123" unit="W" />
+        <CenteredLabelAndValue text="money" value="123" />
+        <hr />
+        <CenteredLabelAndValue text="critically wounded people" value="123" />
+        <CenteredLabelAndValue text="animal in poor condition" value="123" />
+        <CenteredLabelAndValue text="mechanical problem" value="123" />
+        <CenteredLabelAndValue text="other problem" value="123" />
+        <CenteredLabelAndValue text="cargo (curr) ton" value="123" />
+        <CenteredLabelAndValue text="cargo (max) ton" value="123" />
+        <CenteredLabelAndValue text="date" value="123" />
+        <CenteredLabelAndValue text="options" value="123" />
+        <CenteredLabelAndValue text="1x" value="123" />
+        <CenteredLabelAndValue text="2x" value="123" />
+        <CenteredLabelAndValue text="3x" value="123" />
+        <CenteredLabelAndValue text="pause" value="123" />
       </Col>
     </Row>
   );

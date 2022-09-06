@@ -47,7 +47,7 @@ export class Brush {
     //circle
     ctx.beginPath();
     ctx.strokeStyle = "#333";
-    let grd = ctx.createRadialGradient(x, y, 5, x, y, Ratio.getPlayerSize());
+    let grd = ctx.createRadialGradient(x, y, Ratio.getPlayerSize() / 5, x, y, Ratio.getPlayerSize());
     grd.addColorStop(0, "rgba(153, 153, 119, 0.9)");
     grd.addColorStop(1, "rgba(0,0,0,0)");
     ctx.fillStyle = grd;
