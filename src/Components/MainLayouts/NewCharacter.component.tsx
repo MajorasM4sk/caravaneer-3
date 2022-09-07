@@ -9,6 +9,13 @@ import { Initializer } from "../../Initialize/Initializer";
 
 export const NewCharacter = (): React.ReactElement => {
   localStorage.clear();
+
+  const [physical, setPhysical] = useState(5);
+  const [agility, setAgility] = useState(5);
+  const [accuracy, setAccuracy] = useState(5);
+  const [intelligence, setIntelligence] = useState(5);
+  const [name, setName] = useState("Steve");
+
   const min = 1;
   const max = 10;
   const maxSum = 20;
@@ -38,12 +45,6 @@ export const NewCharacter = (): React.ReactElement => {
   const incrementIntelligence = () => {
     if (intelligence !== max && getSum() < maxSum) setIntelligence(intelligence + 1);
   };
-
-  const [physical, setPhysical] = useState(5);
-  const [agility, setAgility] = useState(5);
-  const [accuracy, setAccuracy] = useState(5);
-  const [intelligence, setIntelligence] = useState(5);
-  const [name, setName] = useState("Steve");
 
   const getSum = () => {
     return physical + agility + accuracy + intelligence;

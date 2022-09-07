@@ -130,4 +130,4 @@ const Map = (): React.ReactElement => {
   );
 };
 
-export default React.memo(Map);
+export default Map;

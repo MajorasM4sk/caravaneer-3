@@ -10,7 +10,7 @@ module.exports = {
   exclude: /node_modules/,
   loader: "ts-loader",
   resolve: {
-    extensions: [".tsx", ".ts", ".js"],
+    extensions: [".tsx", ".ts", ".js", ".css"],
   },
   mode: "development",
   entry: "./src/index.tsx",
