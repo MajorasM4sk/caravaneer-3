@@ -1,14 +1,19 @@
 import { Animal, AnimalData } from "./Animal";
-import { ItemData } from "./Item";
+import { containers } from "./Items/Container";
+import { liquids } from "./Items/Liquid";
+import { ItemId } from "./Items/_Item";
 import { PersonData, SPerson } from "./Person";
 import { VehiculeData } from "./Vehicule";
+
+export type Quantity = { itemId: ItemId; qte: number };
 
 export class CaravanData {
   id: string;
   people: PersonData[];
   animals?: Animal[];
   vehicules: VehiculeData[];
-  cargo?: ItemData[];
+  cargo: Quantity[];
+  containers: { container: Quantity; liquid: Quantity }[];
   name?: string;
   money: number;
   reputation?: {
@@ -58,4 +63,23 @@ export class SCaravan extends CaravanData {
   public static getFuelConsumption = (c: CaravanData) => {};
   public static getElectricityConsumption = (c: CaravanData) => {};
   public static getNoticeability = (c: CaravanData) => {};
+  public static getLiquidQte = (c: CaravanData, liquid: ItemId) => {
+    let sum = 0;
+    for (let container of c.containers) {
+      if (container.liquid.itemId === liquid) {
+        sum += container.liquid.qte;
+      }
+    }
+    return sum;
+  };
+  public static getLiquidRemainingSpace = (c: CaravanData, liquid: ItemId) => {
+    let sum = 0;
+    for (let container of c.containers) {
+      let containerData = containers.find((c) => c.id === liquid);
+      if (container.liquid.itemId === liquid) {
+        sum += containerData.capacityL - container.liquid.qte;
+      }
+    }
+    return sum;
+  };
 }

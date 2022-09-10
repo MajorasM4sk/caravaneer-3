@@ -1,4 +1,4 @@
-import { ItemData } from "./Item";
+import { ItemId } from "./Items/_Item";
 
 export class AnimalData {
   public id: string;
@@ -18,7 +18,7 @@ export class AnimalData {
   public maxNbAttachedCart: number;
   public weight: number;
   public idealWeight: number;
-  public produces: ItemData[];
+  public produces: ItemId[];
   public baseSpeed: number;
 }
 

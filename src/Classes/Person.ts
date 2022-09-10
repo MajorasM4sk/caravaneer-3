@@ -1,4 +1,4 @@
-import { ItemData } from "./Item";
+import { ItemData } from "./Items/_Item";
 
 export class PersonData {
   public id: string;
