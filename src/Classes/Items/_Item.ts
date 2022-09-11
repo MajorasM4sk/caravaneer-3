@@ -1,9 +1,14 @@
-export type ItemId = string;
+import { ContainerId } from "./Container";
+import { MedicineId } from "./FirstAid";
+import { FoodId } from "./Food";
+import { LiquidId } from "./Liquid";
+import { ResourceId } from "./Resource";
+
+export type ItemId = FoodId | LiquidId | ContainerId | MedicineId | ResourceId;
 
 export class ItemData {
-  id: ItemId;
   name: string;
-  weightPerUnit: number;
+  weightPerUnitKg: number;
   isInteger: boolean;
 }
 

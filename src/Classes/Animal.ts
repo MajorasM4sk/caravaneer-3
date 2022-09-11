@@ -6,7 +6,6 @@ export class AnimalData {
   public name: number;
   public gender: number;
   public birth: number;
-  public estPrice: number;
   public hpMax: number;
   public hp: number;
   public baseMaxLoad: number;

@@ -1,13 +1,17 @@
+import { Normals } from "../utils/Normals";
 import { ItemData } from "./Items/_Item";
 
+export type Gender = "man" | "woman";
+export type PersonStat = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 export class PersonData {
   public id: string;
+  public gender: Gender;
   public group: string;
   public name: string;
-  public physical: number;
-  public agility: number;
-  public accuracy: number;
-  public intelligence: number;
+  public physical: PersonStat;
+  public agility: PersonStat;
+  public accuracy: PersonStat;
+  public intelligence: PersonStat;
   public combatExperience: number;
   public travellingExperience: number;
   public doctor: number;
@@ -41,8 +45,6 @@ export class PersonData {
   public victoryMorale: number;
   public freedomMorale: number;
   public salaryMorale: number;
-  public caloriesConsumption: number;
-  public waterConsumption: number;
   public faction: string;
   public equipment: {
     weapon?: ItemData;
@@ -62,7 +64,6 @@ export class PersonData {
   public hasDamagedEye: boolean;
   public hasDamagedLeg: boolean;
   public hasDamagedArm: boolean;
-  public estPrice: number;
   public sight: number;
   public weight: number;
   public idealWeight: number;
@@ -102,8 +103,18 @@ export class SPerson {
         (this.getHealthState(p) === "Moderately wounded" ? 0.9 : this.getHealthState(p) === "Severely wounded" ? 0.8 : this.getHealthState(p) === "Critically wounded" ? 0.2 : 1)
     );
   };
-  public static getPercentIdealWeight = (p: PersonData) => {}; //< 90% is almost instant death. < 95% is pretty dangerous too
+  public static getPercentIdealWeight = (p: PersonData) => {
+    //< 90% is almost instant death (a day or two). < 95% is pretty dangerous too
+    //too high will slow down the character. max 200%
+    return p.weight / p.idealWeight;
+  };
   public static getDamageResistance = (p: PersonData) => {};
   public static getFireResistance = (p: PersonData) => {};
   public static getExplosionResistance = (p: PersonData) => {};
+  public static getCaloryConsumptionPerDay = (p: PersonData, isWalking: boolean) => {
+    return Normals.getCaloryConsumptionPerDay(p.idealWeight, isWalking);
+  };
+  public static getWaterConsumptionPerDay = (p: PersonData, isWalking: boolean) => {
+    return Normals.getWaterConsumptionPerDay(p.idealWeight, isWalking);
+  };
 }

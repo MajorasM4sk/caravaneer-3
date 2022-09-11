@@ -1,3 +1,5 @@
+import { PersonStat } from "../Classes/Person";
+import { Normals } from "../utils/Normals";
 import initialCaravan from "./InitCaravan";
 import initialCities from "./InitCities";
 import initialMap from "./InitMap";
@@ -19,14 +21,16 @@ export class Initializer {
   };
   private static initCaravan = (name: string, physical: number, agility: number, accuracy: number, intelligence: number) => {
     let caravan = initialCaravan;
+    let weight = Normals.getIdealWeight(physical as PersonStat, "man");
     caravan.people.push({
       id: "0",
       group: "volunteer",
+      gender: "man",
       name: name,
-      physical: physical,
-      agility: agility,
-      accuracy: accuracy,
-      intelligence: intelligence,
+      physical: physical as PersonStat,
+      agility: agility as PersonStat,
+      accuracy: accuracy as PersonStat,
+      intelligence: intelligence as PersonStat,
       combatExperience: 1,
       travellingExperience: 1,
       doctor: 1,
@@ -60,8 +64,6 @@ export class Initializer {
       victoryMorale: 1,
       freedomMorale: 1,
       salaryMorale: 1,
-      caloriesConsumption: 1,
-      waterConsumption: 1,
       faction: "protagonist",
       equipment: {},
       distanceTravelled: 0,
@@ -69,10 +71,9 @@ export class Initializer {
       hasDamagedEye: false,
       hasDamagedLeg: false,
       hasDamagedArm: false,
-      estPrice: 0,
       sight: 1,
-      weight: 1,
-      idealWeight: 1,
+      weight: weight,
+      idealWeight: weight,
     });
     localStorage.setItem("caravan", JSON.stringify(caravan));
   };

@@ -5,8 +5,12 @@ const initialCaravan: CaravanData = {
   people: [],
   animals: [],
   vehicules: [],
-  cargo: [{ itemId: "insects", qte: 2 }],
-  containers: [{ container: { itemId: "bottle", qte: 2 }, liquid: { itemId: "water", qte: 2 } }],
+  cargo: [
+    { itemId: "insects", qty: 2 },
+    { itemId: "medicine", qty: 10 },
+    { itemId: "forage", qty: 5 },
+  ],
+  containers: [{ container: { itemId: "glassBottle", qty: 2 }, liquid: { itemId: "water", qty: 2 } }],
   name: "",
   money: 1000,
   reputation: {

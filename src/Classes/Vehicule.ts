@@ -1,7 +1,6 @@
 export class VehiculeData {
   public id: string;
   public type: string;
-  public estPrice: number;
   public hpMax: number;
   public hp: number;
   public maxLoad: number;

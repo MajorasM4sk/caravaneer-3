@@ -11,16 +11,23 @@ export class MapData {
   fps?: number;
   playerLocation: Point;
   enemies?: { text?: string; location: Point }[];
+  date: number;
 }
 
 export class SMap {
-  public static updateMapLocation = (map: MapData, t: number, caravanSpeedKmph: number) => {
+  //returns time elapsed in (game time) hours since last frame
+  public static updateMap = (map: MapData, t: number, caravanSpeedKmph: number): number => {
+    let hourDiff = 0;
     if (map.lastFrame !== null && !map.paused) {
-      let norm = ((t - map.lastFrame) * map.gameSpeed) / 15;
+      let diff = t - map.lastFrame;
+      hourDiff = diff / 500; //500ms real life = 1h game time
+      map.date = map.date + hourDiff * 3600000; //milliseconds in an hour
+      let norm = (diff * map.gameSpeed) / 15;
       map.playerLocation.x += Math.cos(map.theta) * norm * Ratio.getSpeedRatioFor(caravanSpeedKmph);
       map.playerLocation.y -= Math.sin(map.theta) * norm * Ratio.getSpeedRatioFor(caravanSpeedKmph);
     }
     map.lastFrame = t;
+    return hourDiff;
   };
 
   //return true if player wants to enter the city
@@ -32,7 +39,6 @@ export class SMap {
         return true;
       } else {
         map.paused = !map.paused;
-        console.log(new Date().getTime());
       }
     } else {
       map.paused = false;
